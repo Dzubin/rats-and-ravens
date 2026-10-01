@@ -286,8 +286,14 @@ re-break.
   - `PLATFORM_DESKTOP` (set in `desktop/CMakeLists.txt`) is the project's
     only purely-behavioral (not size/constant) platform branch so far:
     ESC/Q really exit the process (after `confirm_quit()`) on desktop,
-    vs. returning to the splash screen on firmware. Firmware's code path
-    for this is untouched original code, not a parallel implementation.
+    vs. leaving to the PicoCalc UF2 Loader on firmware (V1.01A). Both go
+    through `exit_to_loader()`: on firmware it asks the loader for its menu
+    via the watchdog scratch registers (`LOADER_*` in `platformer_config.h`,
+    the same hand-over PicoCalc-SD-Drive uses; the loader has no official
+    app exit call) and reboots, so RP2040 and RP2350 behave identically;
+    on desktop it just calls `exit(0)`. `is_quit_key()` (Q or ESC) is used
+    by the splash screen and the death screen; ESC in the game is immediate
+    on firmware, Q in the game still asks `confirm_quit()` first.
 - `pickup_sprites.h` — 8x8 coin and jewel pictures (`PICKUP_USE_SPRITES`).
 - `player_sprite.h` — 16x24 player picture (`PLAYER_USE_SPRITE` switches it off).
 - `rat_raven_sprites.h` — 16x16 rat/raven pictures for the rat_ravens;

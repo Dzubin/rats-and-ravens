@@ -18,6 +18,9 @@
 
 #include "pico/stdlib.h"
 #include "pico/bootrom.h"      /* reset_usb_boot() - BOOTSEL reboot ('~') */
+#ifndef PLATFORM_DESKTOP
+#include "hardware/watchdog.h" /* watchdog_hw, watchdog_reboot() - exit to the UF2 Loader */
+#endif
 
 #include "lcd.h"          /* WIDTH, HEIGHT, GLYPH_HEIGHT, RGB(), lcd_*   */
 #include "southbridge.h"  /* sb_init(), sb_read_keyboard()               */
@@ -45,7 +48,8 @@ int main(void)
 
     for (;;) {
         splash_screen();
-        wait_any_key();
+        if (is_quit_key(wait_any_key()))
+            exit_to_loader();             /* does not return */
         run_demo();
     }
 }
@@ -108,20 +112,13 @@ static void run_demo(void)
                 accum_ms = 0;
                 break;
 #else
-                drain_keys();
-                return;                     /* back to the splash screen */
+                exit_to_loader();           /* does not return */
 #endif
             }
 
             if (c == 'q' && st == KEY_STATE_PRESSED) {
-                if (confirm_quit()) {
-#ifdef PLATFORM_DESKTOP
-                    exit(0);
-#else
-                    drain_keys();
-                    return;                 /* back to the splash screen */
-#endif
-                }
+                if (confirm_quit())
+                    exit_to_loader();       /* does not return */
                 /* Declined. The prompt drained the key buffer, so any
                  * LEFT/RIGHT release during it was lost: forget both, or
                  * the character would keep running on its own. The prompt
@@ -207,13 +204,8 @@ static void run_demo(void)
             if (player_died) {
                 render_frame();        /* show the moment of death first */
                 sfx_play_sad();         /* same sad sound as becoming sick */
-                if (show_death_screen()) {
-#ifdef PLATFORM_DESKTOP
-                    exit(0);
-#else
-                    return;                 /* back to the splash screen */
-#endif
-                }
+                if (show_death_screen())
+                    exit_to_loader();       /* does not return */
                 start_run();           /* retry the SAME level */
                 last_ms = to_ms_since_boot(get_absolute_time());
                 accum_ms = 0;
@@ -2320,12 +2312,12 @@ static void pause_draining_keys(uint32_t ms)
  * continue (wait_any_key(), which itself starts with one more
  * drain_keys(), redundant here but harmless, and keeps that function
  * correct on its own for its other caller, the splash screen). Returns
- * true if that key was Q.                                                */
+ * true if that key was Q or ESC.                                         */
 static bool end_screen_pause_and_wait(void)
 {
     put_row(ROW_END_PROMPT, "PRESS ANY KEY TO CONTINUE", COL_WHITE);
     pause_draining_keys(END_SCREEN_PAUSE_MS);
-    return wait_any_key() == 'q';
+    return is_quit_key(wait_any_key());
 }
 
 /* death_reason (set alongside player_died=true in step_physics(), see its
@@ -2507,6 +2499,38 @@ static void go_bootsel(void)
     reset_usb_boot(0, 0);
     while (1)
         tight_loop_contents();
+}
+
+/* True for the keys that leave the game: Q (either case, wait_any_key()
+ * already lowercases letters) and ESC.                                   */
+static bool is_quit_key(uint8_t c)
+{
+    return c == 'q' || c == 'Q' || c == KEY_ESC;
+}
+
+/* Leaves the game and returns to the PicoCalc UF2 Loader's menu: shows a
+ * message, asks the loader for its menu (see LOADER_COMMAND_MAGIC in the
+ * config header) and reboots with the watchdog. If the game was flashed
+ * straight to the chip with no loader, nothing reads the request and it
+ * simply restarts. On the desktop build there is no loader, so it just
+ * closes the program. Both PicoCalc chips take the same path.             */
+static void exit_to_loader(void)
+{
+    sfx_silence();
+#ifdef PLATFORM_DESKTOP
+    exit(0);
+#else
+    put_row(ROW_BOOTSEL, "BACK TO THE LOADER...", COL_YELLOW);
+    sleep_ms(LOADER_EXIT_MSG_MS);
+
+    watchdog_hw->scratch[LOADER_SCRATCH_MODE] = LOADER_BOOT_MODE_SD;
+    watchdog_hw->scratch[LOADER_SCRATCH_ARGUMENT] = 0;
+    watchdog_hw->scratch[LOADER_SCRATCH_MAGIC] = LOADER_COMMAND_MAGIC;
+    watchdog_reboot(0, 0, LOADER_REBOOT_DELAY_MS);
+
+    while (1)
+        tight_loop_contents();      /* the reboot comes in a few milliseconds */
+#endif
 }
 
 static void drain_keys(void)

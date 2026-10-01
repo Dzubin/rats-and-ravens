@@ -68,6 +68,8 @@ static inline uint8_t  ev_state(uint16_t e);
 static inline uint8_t  ev_code(uint16_t e);
 static bool is_mod_key(uint8_t c);
 static void go_bootsel(void);
+static void exit_to_loader(void);
+static bool is_quit_key(uint8_t c);
 static void drain_keys(void);
 static bool confirm_quit(void);
 static int  choose_level(void);

@@ -230,14 +230,16 @@ picocalc_init().
                           weaker jump (double jump).
   ENTER or P ............ pause / resume, shows/hides a "PAUSED"
                           message on screen
-  ESC ................... firmware: quit to the splash screen, no
-                          confirmation. Desktop (PLATFORM_DESKTOP):
-                          confirms first, then exits the program,
-                          since there is no splash to usefully
-                          return to on a real desktop app.
-  Q ..................... firmware: quit to the splash screen, asks
-                          to confirm first (in case of a stuck or
-                          panic quit). Desktop: confirms, then exits
-                          the program the same way ESC does.
+  ESC ................... firmware: leave the game at once and go
+                          back to the PicoCalc UF2 Loader's menu (same
+                          on RP2040 and RP2350), no confirmation.
+                          Desktop (PLATFORM_DESKTOP): confirms first,
+                          then exits the program. Also works on the
+                          splash screen and the death screen.
+  Q ..................... firmware: asks to confirm first (in case of
+                          a stuck or panic quit), then goes back to the
+                          UF2 Loader's menu. Desktop: confirms, then
+                          exits the program. Also works, without
+                          asking, on the splash and death screens.
   ~  (SHIFT + backtick) . reboot into BOOTSEL (USB drive) mode
 ```

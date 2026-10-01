@@ -71,6 +71,7 @@ target_link_libraries(picocalc-platformer
     hardware_spi
     hardware_pio
     hardware_clocks
+    hardware_watchdog
 )
 
 # The chip is part of every output file name (picocalc-platformer-RP2040.uf2 /

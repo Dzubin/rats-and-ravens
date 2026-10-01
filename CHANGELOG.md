@@ -11,3 +11,17 @@ the version here matches the `VERSION` define in `platformer_config.h`.
   (12 on levels 3-4, 24 on 5-6, 40 on 7-8 and every level from there on),
   instead of starting at 8 and doubling every level. The empty level (10)
   is unchanged.
+
+### Changed (controls), V1.01A
+- Q, q and ESC now leave the game and return to the PicoCalc UF2 Loader's
+  menu, the same on the RP2040 and the RP2350. They work on the splash
+  screen, in the game and on the death screen. In the game Q still asks
+  "QUIT?" first (Y to confirm); ESC leaves at once. Before, they only went
+  back to the splash screen, and did nothing on the splash screen.
+  The game asks the loader for its menu through the chip's watchdog scratch
+  registers and reboots; if it was flashed without the loader it just
+  restarts. The desktop build is unchanged (ESC asks first, then closes the
+  program); Q or ESC on its splash screen now closes it too.
+- The death screen's message line now says `PRESS Q OR ESC TO QUIT`, and
+  ESC quits from it as well as Q.
+- Version V1.01A.

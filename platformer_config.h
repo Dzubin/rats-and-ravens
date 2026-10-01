@@ -8,7 +8,7 @@
 
 /* shown on the splash screen */
 #define GAME_TITLE "RATS AND RAVENS"
-#define VERSION "V1.00A"
+#define VERSION "V1.01A"
 
 /* ===================================================================== */
 /*  Screen                                                                */
@@ -690,7 +690,7 @@
 #define RAT_RAVEN_SPEED_RAMP_START    20
 #define RAT_RAVEN_SPEED_RAMP_PCT      5
 #define RAT_RAVEN_SPEED_MAX_PCT       200
-#define MSG_DEATH             "PRESS Q TO QUIT"
+#define MSG_DEATH             "PRESS Q OR ESC TO QUIT"
 #define MSG_SICK              "YOU FEEL SICK"
 #define MSG_JEWEL             "YOU FEEL GREAT!"
 #define MSG_IN_FOG            "YOU ARE IN THICK FOG"
@@ -747,3 +747,20 @@
 #define WIN_NOTE_GAP_MS       20
 /* How long the "REBOOTING TO BOOTSEL..." message shows before the reboot. */
 #define BOOTSEL_MSG_MS        300
+
+/* Leaving the game for the PicoCalc UF2 Loader (pelrun/uf2loader), on the
+ * PicoCalc builds only. The loader has no call for an app to use, but its own
+ * menu hands commands to its start-up code through the chip's watchdog scratch
+ * registers, which survive a watchdog reboot: scratch 0 holds a magic number,
+ * 1 the boot mode, 2 an argument. Asking for boot mode "SD" then rebooting
+ * makes the loader show its menu again. The same values are used by
+ * PicoCalc-SD-Drive.                                                       */
+#define LOADER_COMMAND_MAGIC      0xE98CC638u /* PICOCALC_BL_MAGIC in the loader's proginfo.h */
+#define LOADER_BOOT_MODE_SD       1           /* BOOT_SD: load the menu from the SD card */
+#define LOADER_SCRATCH_MAGIC      0
+#define LOADER_SCRATCH_MODE       1
+#define LOADER_SCRATCH_ARGUMENT   2
+/* How long the "BACK TO THE LOADER..." message shows before the reboot.     */
+#define LOADER_EXIT_MSG_MS        300
+/* The watchdog reboot happens this many ms after it is requested.          */
+#define LOADER_REBOOT_DELAY_MS    10

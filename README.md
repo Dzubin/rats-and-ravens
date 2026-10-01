@@ -175,11 +175,11 @@ left or right doesn't affect it. A 2-minute countdown
 step, so it pauses along with everything else. Reaching 0, or falling
 into a gap, is a **death**: a "YOU DIED" message shows, with a one-line
 reason underneath — "YOU RAN OUT OF TIME," "YOU FELL INTO A GAP," "A
-RAT KILLED YOU" or "A RAVEN KILLED YOU" (a ground or a flying rat_raven) — and any key except Q retries the *same* level from the
+RAT KILLED YOU" or "A RAVEN KILLED YOU" (a ground or a flying rat_raven) — and any key except Q or ESC retries the *same* level from the
 beginning: score, timer, every pickup, and every rat_raven's position all
 reset, but the layout doesn't change (only winning generates a new one).
-The message line shows `PRESS Q TO QUIT` on this screen; Q goes back to
-the splash screen on the PicoCalc and exits the program on the desktop.
+The message line shows `PRESS Q OR ESC TO QUIT` on this screen; Q or ESC leaves the
+game (see the key table below).
 
 Either way, the end screen enforces at least a 2-second pause — with the
 keyboard buffer continuously drained the whole time, so a still-held or
@@ -334,8 +334,8 @@ separate silent stub.
 | SPACE or UP             | jump. Press again in mid-air for one more, weaker jump (double jump). Inside a foggy zone: a small step up instead. |
 | DOWN                    | (foggy zones only, including while standing on top of one) a small step down |
 | ENTER or P               | pause / resume -- shows/hides a "PAUSED" message on screen. Everything stops: timers, the jewel, and any sound effect that was playing |
-| ESC                     | firmware: quit to the splash screen, no confirmation. Desktop: confirms first, then exits the program |
-| Q                       | firmware: quit to the splash screen, asks to confirm first. Desktop: confirms, then exits the program the same way ESC does |
+| ESC                     | firmware: leave the game and go back to the PicoCalc UF2 Loader's menu at once, no confirmation (the same on the RP2040 and the RP2350). Desktop: confirms first, then exits the program. Also leaves from the splash screen and the death screen |
+| Q                       | firmware: asks to confirm first (Y = yes), then goes back to the UF2 Loader's menu. Desktop: confirms, then exits the program. Also leaves from the splash screen and the death screen, without asking |
 | L                       | choose a level: type one or two digits (ENTER after a single digit, ESC to cancel) and the game restarts at that level |
 | A / S / D / F           | left / up / down / right, the same as the arrow keys, so the game is easier to play on a laptop keyboard. Not shown on any in-game help screen. |
 | ~ (SHIFT + `)           | reboot into BOOTSEL (USB drive) mode          |
