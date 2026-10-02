@@ -6,6 +6,13 @@ the version here matches the `VERSION` define in `platformer_config.h`.
 
 ## [Unreleased]
 
+### Changed (desktop build)
+- The build logic repeated in `desktop/CMakeLists.txt` now lives in
+  `desktop/shim_desktop.cmake`, and the shim files were refreshed from a shared
+  copy (this replaces the project's own `shim_audio.c`, which behaves the same
+  for the calls the game makes). The numeric keypad now works in the desktop
+  build. No gameplay change.
+
 ### Changed (gameplay)
 - Rat_raven count now starts at 6 (levels 1-2) and doubles every 2 levels
   (12 on levels 3-4, 24 on 5-6, 40 on 7-8 and every level from there on),

@@ -306,6 +306,12 @@ re-break.
 - `desktop/` — SDL2 build for Windows and Linux; a shim (`shim_*.c`,
   `pico/*.h`, `hardware/*.h`) re-implements the picocalc-text-starter
   driver API so `platformer.c` compiles unchanged.
+  - **Managed files:** everything in `desktop/` except `CMakeLists.txt`,
+    `shim_config.h` and `lcd.h` is copied in from the shared PicoCalc kit by
+    its `sync-kit.sh` (version in `desktop/KIT_VERSION`). Do not edit those
+    here; the next sync would overwrite the change. Fix them in the kit and
+    re-sync. `desktop/CMakeLists.txt` just names the program, its sources and
+    the `PLATFORM_DESKTOP` define.
   - `desktop/lcd.h` is a shadow header: `#include_next "lcd.h"` (GCC/clang
     extension) pulls in the real, untouched, 320x320 vendored `lcd.h`,
     then `#undef`/`#define`s just `WIDTH 640`/`HEIGHT 480`. Works because

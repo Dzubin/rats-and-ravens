@@ -1,5 +1,5 @@
 /*
- * shim_core.c - window, timing and event pump for the Windows (SDL2) PicoCalc
+ * shim_core.c - window, timing and event pump for the desktop (SDL2) PicoCalc
  * shim. Everything else in the shim hangs off shim_pump(): any call that
  * waits (sleep_ms, sb_read_keyboard, ...) or draws (lcd_blit) runs it, so the
  * window stays responsive without the program having to know about SDL.
@@ -80,7 +80,7 @@ void shim_init(void)
 
     SDL_SetMainReady();
     start_counter = SDL_GetPerformanceCounter();
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_AUDIO) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0) {
         fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
         exit(1);
     }
