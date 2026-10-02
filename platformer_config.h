@@ -753,8 +753,7 @@
  * menu hands commands to its start-up code through the chip's watchdog scratch
  * registers, which survive a watchdog reboot: scratch 0 holds a magic number,
  * 1 the boot mode, 2 an argument. Asking for boot mode "SD" then rebooting
- * makes the loader show its menu again. The same values are used by
- * PicoCalc-SD-Drive.                                                       */
+ * makes the loader show its menu again.                                     */
 #define LOADER_COMMAND_MAGIC      0xE98CC638u /* PICOCALC_BL_MAGIC in the loader's proginfo.h */
 #define LOADER_BOOT_MODE_SD       1           /* BOOT_SD: load the menu from the SD card */
 #define LOADER_SCRATCH_MAGIC      0
