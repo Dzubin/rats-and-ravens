@@ -337,7 +337,8 @@ re-break.
     beside it).
 - `picocalc-text-starter-main/` — vendored `picocalc-text-starter` (LCD,
   south-bridge, audio drivers) by Blair Leduc. **Do not modify anything
-  here.**
+  here.** One local change is already made: `drivers/fat32.c`
+  (`get_next_free_cluster()` search-hint fix); do not patch anything else.
 - `CHANGELOG.md` — add a bullet under `[Unreleased]` whenever behaviour
   changes (same pass as the code + README edits).
 

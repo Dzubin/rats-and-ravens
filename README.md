@@ -407,4 +407,4 @@ of what changed and why.
 ## License
 
 MIT — see `LICENSE`. The vendored `picocalc-text-starter-main/` keeps its
-own MIT license (Blair Leduc); do not edit it.
+own MIT license (Blair Leduc); do not edit it. One small local change is already in it: `drivers/fat32.c` (`get_next_free_cluster()` now advances its search hint, so a long sequential SD write does not look hung).
