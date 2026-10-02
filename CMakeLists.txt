@@ -49,7 +49,7 @@ add_executable(picocalc-platformer
 pico_set_program_name(picocalc-platformer "picocalc-platformer")
 pico_set_program_version(picocalc-platformer "0.1")
 
-# audio.c needs its PIO program's generated header (audio.pio.h) -- see
+# audio.c needs its PIO program's generated header (audio.pio.h); see
 # picocalc-text-starter-main/CMakeLists.txt, which does the same thing.
 pico_generate_pio_header(picocalc-platformer ${STARTER}/drivers/audio.pio)
 

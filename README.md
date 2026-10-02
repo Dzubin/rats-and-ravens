@@ -333,7 +333,7 @@ separate silent stub.
 | LEFT / RIGHT            | move (full speed while held; no acceleration or friction yet) |
 | SPACE or UP             | jump. Press again in mid-air for one more, weaker jump (double jump). Inside a foggy zone: a small step up instead. |
 | DOWN                    | (foggy zones only, including while standing on top of one) a small step down |
-| ENTER or P               | pause / resume -- shows/hides a "PAUSED" message on screen. Everything stops: timers, the jewel, and any sound effect that was playing |
+| ENTER or P               | pause / resume; shows/hides a "PAUSED" message on screen. Everything stops: timers, the jewel, and any sound effect that was playing |
 | ESC                     | firmware: leave the game and go back to the PicoCalc UF2 Loader's menu at once, no confirmation (the same on the RP2040 and the RP2350). Desktop: confirms first, then exits the program. Also leaves from the splash screen and the death screen |
 | Q                       | firmware: asks to confirm first (Y = yes), then goes back to the UF2 Loader's menu. Desktop: confirms, then exits the program. Also leaves from the splash screen and the death screen, without asking |
 | L                       | choose a level: type one or two digits (ENTER after a single digit, ESC to cancel) and the game restarts at that level |

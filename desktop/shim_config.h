@@ -16,7 +16,7 @@
 /* The window opens at (LCD size * this); it is resizable, and SDL keeps
  * the picture at the LCD's aspect ratio. 2026-09-24: dropped from 2 to 1
  * for this project now that its desktop LCD size is 640x480 (see
- * platformer_config.h's "Scale" section) -- at 2x that would be a
+ * platformer_config.h's "Scale" section); at 2x that would be a
  * 1280x960 window, taller than many screens' usable height, and Thomas
  * hit exactly that: "the top (status lines) and the bottom (ground) are
  * not visible" (centred vertically, with the excess height hanging off
