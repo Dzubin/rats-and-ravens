@@ -74,8 +74,8 @@ target_link_libraries(picocalc-platformer
     hardware_watchdog
 )
 
-# The chip is part of every output file name (picocalc-platformer-RP2040.uf2 /
-# picocalc-platformer-RP2350.uf2, and the matching .elf/.bin/.hex), so a
+# The chip is part of every output file name (platformer-RP2040.uf2 /
+# platformer-RP2350.uf2, and the matching .elf/.bin/.hex), so a
 # downloaded file always says which board it was built for.
 if(PICO_PLATFORM MATCHES "^rp2040")
     set(CHIP_NAME RP2040)
@@ -84,7 +84,7 @@ elseif(PICO_PLATFORM MATCHES "^rp2350")
 else()
     set(CHIP_NAME ${PICO_PLATFORM})
 endif()
-set_target_properties(picocalc-platformer PROPERTIES OUTPUT_NAME picocalc-platformer-${CHIP_NAME})
+set_target_properties(picocalc-platformer PROPERTIES OUTPUT_NAME platformer-${CHIP_NAME})
 
 pico_add_extra_outputs(picocalc-platformer)
 

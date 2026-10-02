@@ -353,10 +353,10 @@ cmake -B build -G Ninja
 ninja -C build
 ```
 
-Output: `build/picocalc-platformer-<chip>.uf2` (`<chip>` is `RP2350` or
+Output: `build/platformer-<chip>.uf2` (`<chip>` is `RP2350` or
 `RP2040`, matching the board), which the build also copies to the
-top-level folder as `picocalc-platformer-RP2350.uf2` or
-`picocalc-platformer-RP2040.uf2`, so both chips' builds can sit side by
+top-level folder as `platformer-RP2350.uf2` or
+`platformer-RP2040.uf2`, so both chips' builds can sit side by
 side. Flash by copying to the `RPI-RP2` drive — hold BOOTSEL on power-up,
 or press `~` (SHIFT + backtick) in the app.
 
@@ -374,7 +374,7 @@ cmake -S desktop -B build-windows -G Ninja
 ninja -C build-windows
 ```
 
-Output: `picocalc-platformer-Windows.exe` in the top-level folder (its
+Output: `platformer-Windows.exe` in the top-level folder (its
 window is titled "Rats and Ravens"). SDL2 is
 linked statically, so it is a single file with no `SDL2.dll`. The keys are
 the same as the table above (`~` simply closes the program).
@@ -391,7 +391,7 @@ run-path. Keep the two files together.
     cmake -S desktop -B build-linux
     cmake --build build-linux
 
-Output: `picocalc-platformer-Linux` and `libSDL2-2.0.so.0` in the top-level
+Output: `platformer-Linux` and `libSDL2-2.0.so.0` in the top-level
 folder.
 
 ## Status

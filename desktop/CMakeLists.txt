@@ -11,13 +11,13 @@
 # Build on Windows (MSYS2 UCRT64 shell with SDL2 installed):
 #     cmake -S desktop -B build-windows -G Ninja
 #     ninja -C build-windows
-# Output: picocalc-platformer-Windows.exe, copied to the top-level project
+# Output: platformer-Windows.exe, copied to the top-level project
 # folder. SDL2 is linked statically, so it is one self-contained file.
 #
 # Build on Linux (needs the SDL2 development package, e.g. libsdl2-dev):
 #     cmake -S desktop -B build-linux
 #     cmake --build build-linux
-# Output: picocalc-platformer-Linux, copied to the top-level project folder
+# Output: platformer-Linux, copied to the top-level project folder
 # together with libSDL2-2.0.so.0 (SDL2 is NOT linked in statically on
 # Linux - keep the two files side by side; the executable finds the
 # library through an $ORIGIN run-path).
@@ -37,7 +37,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/shim_desktop.cmake)
 # This folder is searched first, so its lcd.h (the 640x480 shadow of the
 # vendored one) wins on the desktop build.
 picocalc_desktop_app(
-    NAME     picocalc-platformer
+    NAME     platformer
     TITLE    "Rats and Ravens"
     SOURCES
         ${TOP}/platformer.c

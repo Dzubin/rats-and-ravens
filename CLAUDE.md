@@ -300,7 +300,7 @@ re-break.
   `RAT_RAVEN_USE_SPRITES` in `platformer_config.h` switches back to squares.
 - `CMakeLists.txt`, `pico_sdk_import.cmake` — firmware build config; a
   POST_BUILD step copies the `.uf2` to the top level as
-  `picocalc-platformer-RP2040.uf2` / `-RP2350.uf2`. Also builds
+  `platformer-RP2040.uf2` / `-RP2350.uf2`. Also builds
   `${STARTER}/drivers/audio.c` + its PIO header, linking
   `hardware_pio`/`hardware_clocks`.
 - `desktop/` — SDL2 build for Windows and Linux; a shim (`shim_*.c`,
@@ -332,8 +332,8 @@ re-break.
   - `desktop/shim_input.c` already maps the full US keyboard (every
     printable key, shifted symbols, F1-F10, arrows, modifiers) into the
     south-bridge FIFO event model.
-  - Output: `picocalc-platformer-Windows.exe` (SDL2 static) /
-    `picocalc-platformer-Linux` (SDL2 dynamic, `libSDL2-2.0.so.0` shipped
+  - Output: `platformer-Windows.exe` (SDL2 static) /
+    `platformer-Linux` (SDL2 dynamic, `libSDL2-2.0.so.0` shipped
     beside it).
 - `picocalc-text-starter-main/` — vendored `picocalc-text-starter` (LCD,
   south-bridge, audio drivers) by Blair Leduc. **Do not modify anything
@@ -350,7 +350,7 @@ VS Code Pico extension (Compile / Run), or from a terminal with
     cmake -B build -G Ninja
     ninja -C build
 
-Output: `build/picocalc-platformer-<chip>.uf2` (`<chip>` is `RP2350` or
+Output: `build/platformer-<chip>.uf2` (`<chip>` is `RP2350` or
 `RP2040`). Flash by copying to the `RPI-RP2` BOOTSEL drive.
 
 Windows (MSYS2 UCRT64 shell, SDL2 installed):

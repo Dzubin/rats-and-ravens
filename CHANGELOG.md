@@ -7,6 +7,8 @@ the version here matches the `VERSION` define in `platformer_config.h`.
 ## [Unreleased]
 
 ### Changed (desktop build)
+- Build outputs are named without the `picocalc-` prefix, since the chip or system
+  at the end of the name already says what they are for: `platformer-RP2040.uf2`, `platformer-RP2350.uf2`, `platformer-Windows.exe` and `platformer-Linux`.
 - Vendored `drivers/fat32.c`: `get_next_free_cluster()` now advances its search
   hint past the cluster it hands out (a local fix, not in upstream), so a long
   sequential write to the SD card no longer re-scans every cluster already given
