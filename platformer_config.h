@@ -8,7 +8,7 @@
 
 /* shown on the splash screen */
 #define GAME_TITLE "RATS AND RAVENS"
-#define VERSION "V1.01A"
+#define VERSION "V1.01B"
 
 /* ===================================================================== */
 /*  Screen                                                                */

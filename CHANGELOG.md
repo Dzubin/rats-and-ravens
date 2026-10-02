@@ -6,6 +6,8 @@ the version here matches the `VERSION` define in `platformer_config.h`.
 
 ## [Unreleased]
 
+## [V1.01B] - 2026-10-02
+
 ### Changed (desktop build)
 - Build outputs are named without the `picocalc-` prefix, since the chip or system
   at the end of the name already says what they are for: `platformer-RP2040.uf2`, `platformer-RP2350.uf2`, `platformer-Windows.exe` and `platformer-Linux`.
