@@ -407,4 +407,32 @@ of what changed and why.
 ## License
 
 MIT — see `LICENSE`. The vendored `picocalc-text-starter-main/` keeps its
-own MIT license (Blair Leduc); do not edit it. One small local change is already in it: `drivers/fat32.c` (`get_next_free_cluster()` now advances its search hint, so a long sequential SD write does not look hung).
+own MIT license (Blair Leduc); do not edit it. It is Blair Leduc's code of 2026-10-18 plus a few small local fixes, described below.
+
+The vendored copy is Blair Leduc's `picocalc-text-starter` as it was on 2026-10-18
+(commit `85a002e`, "Upgrade to SDK 2.3.1"), with **four small local fixes** that
+are not in his repository yet:
+
+1. In `picocalc-text-starter-main/drivers/fat32.c`, `fat32_write()` no longer walks
+   the cluster chain, allocating a cluster at a cluster-aligned end of file, before
+   it allocates the clusters the write needs. That walk could leave a cluster
+   unreachable (a leak). A write of zero bytes returns at once.
+2. In the same file, `fat32_dir_read()` copies the last part of a long file name of
+   248 to 255 characters as far as it fits; upstream drops that part.
+3. In `picocalc-text-starter-main/drivers/sdcard.c`, a command is not sent to a card
+   that is still busy after the 0.5 s wait.
+4. In `picocalc-text-starter-main/drivers/lcd.c`, `lcd_putstr()` cuts a string off at
+   the right edge of the display, because the line buffer holds exactly one row of
+   text.
+
+Earlier versions of this copy carried other local changes, and those are now in
+the upstream code: the search-hint fix in `get_next_free_cluster()`
+([#30](https://github.com/BlairLeduc/picocalc-text-starter/pull/30)), the
+deleted-entry fixes in `fat32_dir_read()` and `link_entry()`
+([#32](https://github.com/BlairLeduc/picocalc-text-starter/pull/32)), the timed
+busy-card wait in `sdcard.c`
+([#33](https://github.com/BlairLeduc/picocalc-text-starter/pull/33)) and
+`lcd_unblit()` ([#31](https://github.com/BlairLeduc/picocalc-text-starter/pull/31)).
+`audio.pio` is exactly as downloaded: it now accepts 20 to 20000 Hz
+([#29](https://github.com/BlairLeduc/picocalc-text-starter/pull/29)), where it used
+to accept only 100 to 2000 Hz. Everything else is exactly as downloaded.

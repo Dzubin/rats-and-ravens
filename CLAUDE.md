@@ -335,10 +335,13 @@ re-break.
   - Output: `platformer-Windows.exe` (SDL2 static) /
     `platformer-Linux` (SDL2 dynamic, `libSDL2-2.0.so.0` shipped
     beside it).
-- `picocalc-text-starter-main/` — vendored `picocalc-text-starter` (LCD,
-  south-bridge, audio drivers) by Blair Leduc. **Do not modify anything
-  here.** One local change is already made: `drivers/fat32.c`
-  (`get_next_free_cluster()` search-hint fix); do not patch anything else.
+- `picocalc-text-starter-main/` — vendored `picocalc-text-starter` (LCD, south-bridge, audio
+  drivers) by Blair Leduc. **Do not modify anything here.** It is stamped from the one master
+  `picocalc-text-starter` by the kit's `sync-starter.sh`: Blair's code of 2026-10-18 (commit
+  `85a002e`) plus four deliberate local fixes (`fat32_write()`, the last part of a long name and
+  `lcd_putstr()` in `drivers/`, and no command to a busy card in `sdcard.c`; all in the README
+  Third-party section). To change anything, change the master and re-run the script; do not
+  patch this copy.
 - `CHANGELOG.md` — add a bullet under `[Unreleased]` whenever behaviour
   changes (same pass as the code + README edits).
 
@@ -404,3 +407,8 @@ played/tested and confirmed working, across many rounds of hardware and
 desktop playtesting through 2026-09-24 — see `README.md` for
 player-facing mechanics detail (`CHANGELOG.md` only tracks changes since the
 release). No known open bugs as of the last playtest.
+
+  Update 2026-10-11: one more deliberate change in `drivers/fat32.c`: `fat32_write()` no longer
+  allocates a cluster twice when a write starts on a cluster boundary (one `break` in the walk loop;
+  the lost cluster was never freed). Described in the README Third-party note;
+  not yet sent upstream. Do not patch anything else.
