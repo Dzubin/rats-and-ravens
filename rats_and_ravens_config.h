@@ -1,7 +1,7 @@
 /*
- *  PicoCalc Platformer: compile-time configuration
+ *  Rats and Ravens: compile-time configuration
  *  ================================================
- *  All #define constants live here (see platformer.c for the design notes
+ *  All #define constants live here (see rats_and_ravens.c for the design notes
  *  and the game itself).  Author: Thomas Dzubin.
  */
 #pragma once
@@ -26,7 +26,7 @@
 /* ===================================================================== */
 /*  Scale: the PicoCalc hardware stays fixed at 320x320 (WIDTH/HEIGHT,
  *  from lcd.h); the desktop SDL2 build instead renders a bigger 640x480
- *  game area. WIDTH/HEIGHT are already available here since platformer.c
+ *  game area. WIDTH/HEIGHT are already available here since rats_and_ravens.c
  *  includes lcd.h before this header (see its #include block), and are
  *  still 320x320 for the firmware build; only the desktop build sees
  *  them as 640x480, via desktop/lcd.h, a small shadow header that
@@ -81,7 +81,7 @@
 
 /* ===================================================================== */
 /*  Camera / world: every level is randomly generated (see
- *  generate_level() in platformer.c). world_width is a runtime variable,
+ *  generate_level() in rats_and_ravens.c). world_width is a runtime variable,
  *  always LEVEL_SCREENS * WIDTH, so the same code serves both builds'
  *  screen widths. WIDTH (from
  *  lcd.h; 320 on PicoCalc, 640 on desktop, see the "Scale" section
@@ -105,7 +105,7 @@
  * fallen this far below the visible screen, it is treated the same as
  * any other death (see TIMER_DURATION_MS below): the death screen
  * shows, then the current level restarts (not a new one; only winning
- * generates a fresh level, see win_level() in platformer.c). HEIGHT is
+ * generates a fresh level, see win_level() in rats_and_ravens.c). HEIGHT is
  * used directly (already the real screen height on either build); the
  * 60px margin below it is unscaled, per the "Scale" section. It just
  * needs to be definitely below the visible screen, which 60px
@@ -117,16 +117,16 @@
  * everything else, the same as the jewel's timer),
  * shown on screen as MM:SS. Reaching 0 is a death, same as falling into
  * a gap: the death screen shows, then the SAME level restarts. See
- * timer_remaining_ms and player_died in platformer.c.                   */
+ * timer_remaining_ms and player_died in rats_and_ravens.c.                   */
 #define TIMER_DURATION_MS  (2 * 60 * 1000)
 
 /* ===================================================================== */
 /*  Level geometry: every level is randomly generated (see
- *  generate_level() in platformer.c) from the ranges/densities below,
+ *  generate_level() in rats_and_ravens.c) from the ranges/densities below,
  *  rather than one hand-placed layout. Every obstacle (including the
  *  ground) is a fully solid rectangle: the player cannot pass through
  *  any side of it, not just land on top. See the SOLIDS[] array near
- *  the top of platformer.c.                                             */
+ *  the top of rats_and_ravens.c.                                             */
 /* ===================================================================== */
 
 /* GROUND_TOP is scaled by SCALE_Y so the ground band keeps the same
@@ -151,7 +151,7 @@
 #define GROUND_TOP    SCALE_Y(300)  /* top edge of the ground, in pixels  */
 #define GROUND_HEIGHT (HEIGHT - GROUND_TOP)
 
-/* Fixed-capacity arrays; see platformer.c's memory comment on
+/* Fixed-capacity arrays; see rats_and_ravens.c's memory comment on
  * generate_level(). Generous headroom over what the density formulas
  * below actually produce at LEVEL_SCREENS, at ~10-12 bytes per
  * entry: trivial next to RP2040's 264KB RAM, no reason to trim further. */
@@ -164,7 +164,7 @@
 /* No gaps or obstacle placement within this many pixels of either end
  * of the level. Guarantees solid ground under the player's start
  * (screen 1) and under the win-trigger at the far right edge (see
- * player_won in platformer.c).                                         */
+ * player_won in rats_and_ravens.c).                                         */
 #define LEVEL_SAFE_MARGIN  SCALE_X(200)
 
 /* Gaps: no jump/double-jump/power-up gating, just a plain running jump.
@@ -182,7 +182,7 @@
  * need the double jump (~141px combo reach, see AIR_JUMP_VELOCITY), so
  * every platform is reachable without a power-up, with an 11px margin at
  * the top of the band. Every platform also keeps at least PLAYER_H of
- * clear space under it (see gen_platforms() in platformer.c), so it can
+ * clear space under it (see gen_platforms() in rats_and_ravens.c), so it can
  * never sit so low over a tower that the tower's top becomes a
  * crawlspace the player cannot fit into.
  * Width and height are multiples of 8 so they can be tiled with an 8x8
@@ -224,8 +224,8 @@
 
 /* Foggy zones: half ground-flush, half floating (picked randomly per
  * zone at generation time). See FOGGY_ZONES[] and player_in_foggy()
- * in platformer.c for what they do. A zone's X/Y are free to overlap a
- * solid's on purpose (see the design note in platformer.c's comment on
+ * in rats_and_ravens.c for what they do. A zone's X/Y are free to overlap a
+ * solid's on purpose (see the design note in rats_and_ravens.c's comment on
  * generate_level()); overlap is only avoided against OTHER foggy
  * zones, purely for visual clarity (two overlapping zone rectangles
  * would be indistinguishable), not because overlap would be broken.
@@ -271,7 +271,7 @@
 #define FOGGY_FLOAT_PLATFORM_MAX_DX     SCALE_X(140)   /* horizontal; scales like GAP_W_MAX */
 
 /* Pickups: every pickup, the jewel and gold coin alike, shares one
- * size and one generic mechanism (PICKUPS[] in platformer.c: {x, y,
+ * size and one generic mechanism (PICKUPS[] in rats_and_ravens.c: {x, y,
  * type, taken}, drawn/collected/erased the same way regardless of
  * type). Any pickup, of any type, is free to sit in open air, on a
  * platform or tower, or inside a foggy zone; collection is a plain
@@ -288,7 +288,7 @@
 
 /* Gold coin: a FIXED count per level, not density-scaled like everything
  * else here. Score comes from gold coin pickups, stomping a rat_raven, and the
- * win screen's time bonus; see `score` in platformer.c.                 */
+ * win screen's time bonus; see `score` in rats_and_ravens.c.                 */
 #define COIN_VALUE          20
 #define STOMP_VALUE          25   /* points for stomping a rat_raven            */
 #define TIME_BONUS_PER_SECOND 3   /* win screen: points per second left       */
@@ -308,14 +308,14 @@
  * ground the same way towers are (never in a gap, never inside a tower),
  * patrol left and right at RAT_RAVEN_SPEED, and reverse on hitting a
  * tower, either end of the level, or the edge of a gap, so they never
- * cross one (see rat_raven_stay_on_ground() in platformer.c). FLYING
+ * cross one (see rat_raven_stay_on_ground() in rats_and_ravens.c). FLYING
  * ones patrol anywhere across the level width
  * at a random height instead, ignoring the ground and gaps entirely,
  * at FLYING_RAT_RAVEN_SPEED, and reverse off a PLATFORM too since they
  * fly at head height. Neither kind spawns within RAT_RAVEN_MIN_SPAWN_DIST
  * of the player's own start position, so one can never hit before the
  * player has a chance to react. Either kind's speed is halved while it
- * is inside a foggy zone; see rat_raven_in_foggy() in platformer.c.
+ * is inside a foggy zone; see rat_raven_in_foggy() in rats_and_ravens.c.
  * Drawn as a rat or a raven sprite (RAT_RAVEN_USE_SPRITES below), or,
  * with sprites off, as a black square outlined in white, since a solid
  * black fill would be invisible against the black background.
@@ -362,7 +362,7 @@
 #define FLYING_RAT_RAVEN_CHANCE_PCT 25   /* out of 100; see gen_rat_ravens() */
 
 /* Colliding with a rat_raven while normal is getting "sick" (see `sick`
- * in platformer.c): the character turns black, with the same outline-
+ * in rats_and_ravens.c): the character turns black, with the same outline-
  * in-white treatment as rat_ravens, since it is the identical
  * visibility problem. It is cured either instantly, by a jewel
  * pickup (gold coin does NOT cure sickness), or by SICK_CURE_TICKS of
@@ -396,7 +396,7 @@
  *  fraction below the integer pixel, e.g. a shift of 4 means 16 subpixels
  *  per pixel. This keeps the feel identical on RP2040 (no hardware FPU)
  *  and RP2350, and identical on the desktop build too, since it is all
- *  plain integer arithmetic. See step_physics() in platformer.c.        */
+ *  plain integer arithmetic. See step_physics() in rats_and_ravens.c.        */
 /* ===================================================================== */
 
 #define SUBPIXEL_SHIFT   4
@@ -477,7 +477,7 @@
  * foggy zone's ledge (on_foggy_ledge) and the key press are two
  * separate, independently-timed events, and a press arriving a tick
  * or two before landing completes would otherwise be silently
- * dropped. See down_buffer_ticks in platformer.c.                       */
+ * dropped. See down_buffer_ticks in rats_and_ravens.c.                       */
 #define DOWN_BUFFER_TICKS  6
 
 /* Double jump: how many extra jumps are allowed while airborne, on top
@@ -517,11 +517,11 @@
 #define COL_PLAYER   RGB( 90, 235, 130)
 /* The character's colour while a double jump is still in effect this
  * trip, until landing: a small, deliberately minor visible cue. See
- * current_player_colour() in platformer.c.                              */
+ * current_player_colour() in rats_and_ravens.c.                              */
 #define COL_PLAYER_AIRJUMP RGB(120, 225, 255)   /* == COL_CYAN */
 #define PLAYER_POWERUP_BORDER_PX  3
 #define COL_GROUND   RGB(150, 100,  60)
-/* Surface detail on the solids (see draw_solid_detail() in platformer.c):
+/* Surface detail on the solids (see draw_solid_detail() in rats_and_ravens.c):
  * grass and darker soil on the ground, stone with mortar lines and lit or
  * dark windows on the towers, wood with plank gaps on the platforms, and a
  * light / dark bevel edge on all of them. 1 = draw it, 0 = plain
@@ -575,7 +575,7 @@
  * three-tone one on a jewel pickup, and a single lower "sad" tone plays for becoming sick or
  * dying. Played through the non-blocking audio_play_sound() (see
  * audio.h) plus a small tick-driven state machine
- * (sfx_play_happy()/sfx_play_sad()/sfx_update() in platformer.c) rather
+ * (sfx_play_happy()/sfx_play_sad()/sfx_update() in rats_and_ravens.c) rather
  * than audio_play_sound_blocking(), which sleeps for its whole
  * duration and would freeze physics for that long, unacceptable for a
  * sound that can fire on every pickup. Durations are in physics ticks
@@ -602,14 +602,14 @@
  * Only used where no other sound is already playing at that exact
  * moment, the shield outcome and every stomp-kill; sickness and death
  * keep the existing sad tone as the dominant cue instead of layering
- * this on top of it. See sfx_play_impact() in platformer.c.             */
+ * this on top of it. See sfx_play_impact() in rats_and_ravens.c.             */
 #define SFX_IMPACT_FREQ1   PITCH_C6
 #define SFX_IMPACT_TICKS1  3    /* ~48ms, sharp high crack */
 #define SFX_IMPACT_FREQ2   PITCH_C3
 #define SFX_IMPACT_TICKS2  10   /* ~160ms, low thud tail */
 
 /* Win screen's score and seconds countdown; see show_win_screen() in
- * platformer.c. This one is not tick/sfx_update()-driven like the
+ * rats_and_ravens.c. This one is not tick/sfx_update()-driven like the
  * others above: the countdown loop calls audio_play_sound_blocking()
  * directly for the beep, since it is already sleeping every other
  * iteration anyway via SCORE_COUNTDOWN_TICK_MS, so there is no physics
@@ -624,7 +624,7 @@
 
 /* Short happy song played on the win screen once the final score is
  * showing (after the time bonus). Note list only; the array itself is
- * built in platformer.c (WIN_SONG). Each entry is a pitch and a length in
+ * built in rats_and_ravens.c (WIN_SONG). Each entry is a pitch and a length in
  * milliseconds; SILENCE is a rest. About 4.6 seconds in total including
  * the driver's 20ms gap after each sounded note, so it stays under the
  * 5 second limit.                                                        */
@@ -639,13 +639,13 @@
  * deleted, in case tuning needs it again later.                         */
 #define ENABLE_DEBUG_READOUT 0
 
-/* Status line layout (see draw_status_lines() in platformer.c): three
+/* Status line layout (see draw_status_lines() in rats_and_ravens.c): three
  * lines. LEVEL:/TIME: on the first and SCORE: on the second, both
  * drawn bigger than the driver's normal 8x10 text via a hand-rolled
  * scaled-glyph renderer (draw_big_text()), scale 2 (16x20px per
  * glyph); LEVEL HIGH SCORE: on the third, at normal size (scale 1),
  * tracking the best score this specific level layout has ever been
- * won with (see level_high_score in platformer.c). Positioned just
+ * won with (see level_high_score in rats_and_ravens.c). Positioned just
  * below the debug readout's row 0. The 10 below is GLYPH_HEIGHT (the
  * driver's normal font row height, from font.h), spelled out as a
  * literal here since lcd.h and font.h are not included by the time
@@ -658,7 +658,7 @@
 #define STATUS_HIGHSCORE_Y    (STATUS_SCORE_Y + 10 * STATUS_SCALE + 2)
 
 /* A fourth line, same normal size as the high score line right above it,
- * showing a short per-level hint (see level_message() in platformer.c). */
+ * showing a short per-level hint (see level_message() in rats_and_ravens.c). */
 #define STATUS_MESSAGE_Y      (STATUS_HIGHSCORE_Y + 10 + 2)
 /* Nothing in the level (solids, fog, pickups, rat_ravens) is ever above this
  * line, only the status lines are, so a scroll repaint can leave the band
@@ -697,7 +697,7 @@
 #define COL_MESSAGE           COL_COIN   /* every message uses the gold coin pickup colour */
 
 /* The death screen's one-line reason, one per way to die (death_reason
- * in platformer.c).                                                      */
+ * in rats_and_ravens.c).                                                      */
 #define MSG_DEATH_TIME        "YOU RAN OUT OF TIME"
 #define MSG_DEATH_FALL        "YOU FELL INTO A GAP"
 #define MSG_DEATH_RAT         "A RAT KILLED YOU"     /* ground rat_raven */
@@ -707,7 +707,7 @@
 /*  Level generation retries                                             */
 /* ===================================================================== */
 
-/* Retry-based placement (see generate_level() in platformer.c): each
+/* Retry-based placement (see generate_level() in rats_and_ravens.c): each
  * gen_*() loop gives up after this many attempts per object it wants,
  * and each "pick a spot" helper after GEN_SPOT_TRIES attempts.          */
 #define GEN_TRIES_PER_OBJECT  20

@@ -1,8 +1,8 @@
-# Rats and Ravens (PicoCalc Platformer)
+# Rats and Ravens
 
 Game title (per Thomas, 2026-09-25): **Rats and Ravens** — `GAME_TITLE`
-in `platformer_config.h`, shown on the splash screen and as the desktop
-window title. Build outputs keep their `picocalc-platformer-*` names.
+in `rats_and_ravens_config.h`, shown on the splash screen and as the desktop
+window title. Build outputs are named `rats-and-ravens-*`.
 
 An original 2D platformer for the ClockworkPi PicoCalc, built on the
 Raspberry Pi Pico SDK, with a matching Windows/Linux SDL2 desktop port.
@@ -40,7 +40,7 @@ re-break.
   progress through the whole game with zero power-ups — a power-up only
   ever makes something easier, never required. Any obstacle a power-up
   helps with must also be clearable without it. See
-  [[platformer-powerups-optional]].
+  [[rats-and-ravens-powerups-optional]].
 - **Every tower must be clearable by a well-timed double jump alone, with
   no power-up.** A tower is a full-width solid wall (no walking around,
   only over), so unlike most obstacles this is a hard safety cap, not a
@@ -92,19 +92,19 @@ re-break.
 ## Files
 
 - `GAME_DESCRIPTION.md` — the long design overview that used to be
-  `platformer.c`'s header comment (moved out 2026-09-26, per Thomas). Keep
+  `rats_and_ravens.c`'s header comment (moved out 2026-09-26, per Thomas). Keep
   that header short; put overview-level text here instead.
-- `platformer_functions.h` — every static function prototype for
-  `platformer.c`, included right before `main()`. Add a prototype here (not
+- `rats_and_ravens_functions.h` — every static function prototype for
+  `rats_and_ravens.c`, included right before `main()`. Add a prototype here (not
   inline in the .c) when a new static function is used before its
   definition. `rat_raven_t` is forward-typedef'd there (`struct rat_raven`).
-- `platformer_variables.c` — every file-scope type (`solid_t`, `pickup_t`,
+- `rats_and_ravens_variables.c` — every file-scope type (`solid_t`, `pickup_t`,
   `struct rat_raven`, `level_rules_t`) and variable (level arrays, player/
-  score/sound/rendering state) of `platformer.c`. It is `#include`d by
-  `platformer.c` before `main()` and is NOT compiled on its own (don't add it
-  to a CMake source list). New globals go there, not in `platformer.c`, so the
+  score/sound/rendering state) of `rats_and_ravens.c`. It is `#include`d by
+  `rats_and_ravens.c` before `main()` and is NOT compiled on its own (don't add it
+  to a CMake source list). New globals go there, not in `rats_and_ravens.c`, so the
   main file stays logic only (Thomas, 2026-09-26).
-- `platformer.c` — the whole program. Raw south-bridge FIFO keyboard model
+- `rats_and_ravens.c` — the whole program. Raw south-bridge FIFO keyboard model
   (never calls `picocalc_init()`). Fixed-point (subpixel, no float),
   fixed-timestep physics in `step_physics()`. Everything is positioned in
   WORLD coordinates; only `fill_world()` translates through `camera_x` at
@@ -253,7 +253,7 @@ re-break.
     way). Sprites are fully opaque, which is why erasing only the old
     footprint is enough. A camera move replaces the erase pass with a
     viewport repaint.
-- `platformer_config.h` — every `#define`/tunable constant. See the
+- `rats_and_ravens_config.h` — every `#define`/tunable constant. See the
   in-file design comments above `TOWER_H_MIN`/`_MAX`, the "Scale" section,
   and the rat_raven block for the reasoning behind non-obvious values; don't
   retune any of `GRAVITY_ACCEL`/the three jump velocities/`TOWER_H_MAX`
@@ -288,7 +288,7 @@ re-break.
     ESC/Q really exit the process (after `confirm_quit()`) on desktop,
     vs. leaving to the PicoCalc UF2 Loader on firmware (V1.01A). Both go
     through `exit_to_loader()`: on firmware it asks the loader for its menu
-    via the watchdog scratch registers (`LOADER_*` in `platformer_config.h`,
+    via the watchdog scratch registers (`LOADER_*` in `rats_and_ravens_config.h`,
     the same hand-over PicoCalc-SD-Drive uses; the loader has no official
     app exit call) and reboots, so RP2040 and RP2350 behave identically;
     on desktop it just calls `exit(0)`. `is_quit_key()` (Q or ESC) is used
@@ -297,15 +297,15 @@ re-break.
 - `pickup_sprites.h` — 8x8 coin and jewel pictures (`PICKUP_USE_SPRITES`).
 - `player_sprite.h` — 16x24 player picture (`PLAYER_USE_SPRITE` switches it off).
 - `rat_raven_sprites.h` — 16x16 rat/raven pictures for the rat_ravens;
-  `RAT_RAVEN_USE_SPRITES` in `platformer_config.h` switches back to squares.
+  `RAT_RAVEN_USE_SPRITES` in `rats_and_ravens_config.h` switches back to squares.
 - `CMakeLists.txt`, `pico_sdk_import.cmake` — firmware build config; a
   POST_BUILD step copies the `.uf2` to the top level as
-  `platformer-RP2040.uf2` / `-RP2350.uf2`. Also builds
+  `rats-and-ravens-RP2040.uf2` / `-RP2350.uf2`. Also builds
   `${STARTER}/drivers/audio.c` + its PIO header, linking
   `hardware_pio`/`hardware_clocks`.
 - `desktop/` — SDL2 build for Windows and Linux; a shim (`shim_*.c`,
   `pico/*.h`, `hardware/*.h`) re-implements the picocalc-text-starter
-  driver API so `platformer.c` compiles unchanged.
+  driver API so `rats_and_ravens.c` compiles unchanged.
   - **Managed files:** everything in `desktop/` except `CMakeLists.txt`,
     `shim_config.h` and `lcd.h` is copied in from the shared PicoCalc kit by
     its `sync-kit.sh` (version in `desktop/KIT_VERSION`). Do not edit those
@@ -332,8 +332,8 @@ re-break.
   - `desktop/shim_input.c` already maps the full US keyboard (every
     printable key, shifted symbols, F1-F10, arrows, modifiers) into the
     south-bridge FIFO event model.
-  - Output: `platformer-Windows.exe` (SDL2 static) /
-    `platformer-Linux` (SDL2 dynamic, `libSDL2-2.0.so.0` shipped
+  - Output: `rats-and-ravens-Windows.exe` (SDL2 static) /
+    `rats-and-ravens-Linux` (SDL2 dynamic, `libSDL2-2.0.so.0` shipped
     beside it).
 - `picocalc-text-starter-main/` — vendored `picocalc-text-starter` (LCD, south-bridge, audio
   drivers) by Blair Leduc. **Do not modify anything here.** It is stamped from the one master
@@ -353,7 +353,7 @@ VS Code Pico extension (Compile / Run), or from a terminal with
     cmake -B build -G Ninja
     ninja -C build
 
-Output: `build/platformer-<chip>.uf2` (`<chip>` is `RP2350` or
+Output: `build/rats-and-ravens-<chip>.uf2` (`<chip>` is `RP2350` or
 `RP2040`). Flash by copying to the `RPI-RP2` BOOTSEL drive.
 
 Windows (MSYS2 UCRT64 shell, SDL2 installed):

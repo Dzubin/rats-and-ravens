@@ -2,9 +2,9 @@
  * Author: Thomas Dzubin.
  *
  * Each picture is 16 rows of 16 characters; '.' is background and the other
- * letters are colours (see sprite_colour() in platformer.c). The rat and the raven face right (they
+ * letters are colours (see sprite_colour() in rats_and_ravens.c). The rat and the raven face right (they
  * are mirrored for the other direction) and the raven has two wing frames.
- * Only used when RAT_RAVEN_USE_SPRITES is 1 in platformer_config.h.          */
+ * Only used when RAT_RAVEN_USE_SPRITES is 1 in rats_and_ravens_config.h.          */
 #ifndef RAT_RAVEN_SPRITES_H
 #define RAT_RAVEN_SPRITES_H
 

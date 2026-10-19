@@ -1,6 +1,6 @@
-# PicoCalc Platformer - desktop (SDL2) build for Windows and Linux, by Thomas Dzubin.
+# Rats and Ravens - desktop (SDL2) build for Windows and Linux, by Thomas Dzubin.
 #
-# Builds the same platformer.c as the firmware. Instead of the PicoCalc
+# Builds the same rats_and_ravens.c as the firmware. Instead of the PicoCalc
 # drivers it links the small SDL2 shim in this folder, which re-implements
 # the picocalc-text-starter driver API (lcd / south-bridge keyboard, by
 # Blair Leduc) - see shim.h. The vendored starter's headers and fonts are
@@ -11,20 +11,20 @@
 # Build on Windows (MSYS2 UCRT64 shell with SDL2 installed):
 #     cmake -S desktop -B build-windows -G Ninja
 #     ninja -C build-windows
-# Output: platformer-Windows.exe, copied to the top-level project
+# Output: rats-and-ravens-Windows.exe, copied to the top-level project
 # folder. SDL2 is linked statically, so it is one self-contained file.
 #
 # Build on Linux (needs the SDL2 development package, e.g. libsdl2-dev):
 #     cmake -S desktop -B build-linux
 #     cmake --build build-linux
-# Output: platformer-Linux, copied to the top-level project folder
+# Output: rats-and-ravens-Linux, copied to the top-level project folder
 # together with libSDL2-2.0.so.0 (SDL2 is NOT linked in statically on
 # Linux - keep the two files side by side; the executable finds the
 # library through an $ORIGIN run-path).
 
 cmake_minimum_required(VERSION 3.13)
 
-project(picocalc-platformer-desktop C)
+project(rats-and-ravens-desktop C)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -37,10 +37,10 @@ include(${CMAKE_CURRENT_LIST_DIR}/shim_desktop.cmake)
 # This folder is searched first, so its lcd.h (the 640x480 shadow of the
 # vendored one) wins on the desktop build.
 picocalc_desktop_app(
-    NAME     platformer
+    NAME     rats-and-ravens
     TITLE    "Rats and Ravens"
     SOURCES
-        ${TOP}/platformer.c
+        ${TOP}/rats_and_ravens.c
         ${STARTER}/drivers/font-8x10.c
     INCLUDES
         ${TOP}

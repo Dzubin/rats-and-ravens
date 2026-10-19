@@ -1,20 +1,20 @@
 /*
- * platformer_functions.h - prototypes for every static function in
- * platformer.c that is used before its definition, so main() and the two
+ * rats_and_ravens_functions.h - prototypes for every static function in
+ * rats_and_ravens.c that is used before its definition, so main() and the two
  * functions right after it can sit at the top of the file. Included by
- * platformer.c only (everything here is `static`, private to that file).
+ * rats_and_ravens.c only (everything here is `static`, private to that file).
  *
  * Author: Thomas Dzubin
  */
-#ifndef PLATFORMER_FUNCTIONS_H
-#define PLATFORMER_FUNCTIONS_H
+#ifndef RATS_AND_RAVENS_FUNCTIONS_H
+#define RATS_AND_RAVENS_FUNCTIONS_H
 
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "platformer_config.h"
+#include "rats_and_ravens_config.h"
 
-/* The full definition is in platformer.c. */
+/* The full definition is in rats_and_ravens.c. */
 typedef struct rat_raven rat_raven_t;
 
 /* main() and what it calls */
@@ -74,4 +74,4 @@ static void drain_keys(void);
 static bool confirm_quit(void);
 static int  choose_level(void);
 
-#endif /* PLATFORMER_FUNCTIONS_H */
+#endif /* RATS_AND_RAVENS_FUNCTIONS_H */

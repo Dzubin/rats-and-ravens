@@ -1,5 +1,5 @@
 /*
- *  Rats and Ravens (PicoCalc Platformer)
+ *  Rats and Ravens
  *  ======================================
  *
  *  A movement / jump / camera-scroll / scoring / randomly generated level
@@ -26,13 +26,13 @@
 #include "southbridge.h"  /* sb_init(), sb_read_keyboard()               */
 #include "keyboard.h"     /* KEY_* codes, KEY_STATE_* values             */
 #include "audio.h"        /* PITCH_*, audio_init(), audio_play_sound()   */
-#include "platformer_config.h"
+#include "rats_and_ravens_config.h"
 #include "rat_raven_sprites.h"
 #include "player_sprite.h"
 #include "pickup_sprites.h"
 
-#include "platformer_functions.h"   /* static function prototypes */
-#include "platformer_variables.c"   /* global types and variables */
+#include "rats_and_ravens_functions.h"   /* static function prototypes */
+#include "rats_and_ravens_variables.c"   /* global types and variables */
 
 /* ===================================================================== */
 /*  main                                                                  */
@@ -278,7 +278,7 @@ static uint16_t pickup_colour(pickup_type_t type)
 /*  Memory: SOLIDS[]/FOGGY_ZONES[]/PICKUPS[] are fixed-capacity arrays,
  *  not dynamically allocated (no malloc anywhere in this project). At
  *  ~10-12 bytes/entry and generous caps (MAX_SOLIDS/MAX_FOGGY_ZONES/
- *  MAX_PICKUPS in platformer_config.h) that is under 1.5KB total,
+ *  MAX_PICKUPS in rats_and_ravens_config.h) that is under 1.5KB total,
  *  trivial next to RP2040's 264KB RAM even though real generated levels
  *  use far fewer entries than the caps allow.                            */
 /* ===================================================================== */
@@ -444,7 +444,7 @@ static bool pick_ground_span(int w, int *out_x)
 
 /* Towers: stand on solid ground, height varies across a band that
  * straddles the double jump's reach (see TOWER_H_MIN/MAX's comment in
- * platformer_config.h). Avoids overlapping any other solid (see the
+ * rats_and_ravens_config.h). Avoids overlapping any other solid (see the
  * design note above generate_level() on why solids specifically need
  * this, unlike foggy zones or pickups).                                 */
 static void gen_towers(void)
@@ -517,7 +517,7 @@ static void add_foggy(int x, int y, int w, int h)
 
 /* Foggy zones are free to overlap a solid on purpose (a zone partly
  * blocked by a platform is a valid, intended obstacle; see the design
- * note in platformer_config.h's FOGGY_* comment). Only checked against
+ * note in rats_and_ravens_config.h's FOGGY_* comment). Only checked against
  * OTHER foggy zones here, purely so two overlapping zone rectangles
  * do not draw as one indistinguishable blob.                             */
 /* A ground-flush foggy zone of height h; shared by the random ground
@@ -547,7 +547,7 @@ static bool foggy_overlaps_any(int x, int y, int w, int h)
  * FOGGY_FLOAT_MAX_GROUND_REACH applies here too. Used by
  * gen_foggy_zones() when a floating zone floats higher than that reach
  * allows directly from the ground; see its own comment in
- * platformer_config.h.                                                   */
+ * rats_and_ravens_config.h.                                                   */
 static bool platform_near_foggy_float(int x, int y, int w, int h)
 {
     for (int i = 0; i < platforms_n; i++) {
@@ -570,7 +570,7 @@ static bool platform_near_foggy_float(int x, int y, int w, int h)
  * ground-flush zone always sits flush on the ground and is reachable by
  * just walking up to it, no jump needed. Only a FLOATING zone needs a
  * reachability check (see platform_near_foggy_float()'s comment and
- * FOGGY_FLOAT_MAX_GROUND_REACH's in platformer_config.h).               */
+ * FOGGY_FLOAT_MAX_GROUND_REACH's in rats_and_ravens_config.h).               */
 static void gen_foggy_zones(void)
 {
     int screens = world_width / REF_SCREEN_W;
@@ -878,7 +878,7 @@ static void generate_level(void)
 
 /* ===================================================================== */
 /*  Player state: resetting it (the variables are in                     */
-/*  platformer_variables.c)                                              */
+/*  rats_and_ravens_variables.c)                                              */
 /* ===================================================================== */
 
 static void reset_player(void)
@@ -1081,7 +1081,7 @@ static void step_physics(void)
     /* Foggy zones: checked once, at the start of the tick (before any
      * movement this tick happens), and used below to slow horizontal
      * movement and switch gravity off for the whole tick. See
-     * FOGGY_ZONES[] and the FOGGY_* constants in platformer_config.h. The
+     * FOGGY_ZONES[] and the FOGGY_* constants in rats_and_ravens_config.h. The
      * power-up always overrides stickiness.                               */
     bool in_foggy = player_in_foggy((int)(player_x_sub >> SUBPIXEL_SHIFT),
                                       (int)(player_y_sub >> SUBPIXEL_SHIFT));
@@ -1340,7 +1340,7 @@ static void step_physics(void)
          * of this tick, otherwise one of the MAX_AIR_JUMPS double-jump
          * charges if any are left; consumed here regardless so a jump
          * press with nothing left to spend is simply dropped, not
-         * queued. See platformer_config.h for the launch velocities and
+         * queued. See rats_and_ravens_config.h for the launch velocities and
          * why the power-up replaces whichever one would otherwise fire.   */
         if (jump_press) {
             if (grounded) {
@@ -2115,7 +2115,7 @@ static void draw_rat_ravens(void)
  * between CAMERA_DEADZONE_LEFT and CAMERA_DEADZONE_RIGHT (screen
  * pixels) without the camera moving at all; stepping past either edge
  * snaps the camera to bring them back to that edge. An instant snap, not
- * smoothed; see the comment on those constants in platformer_config.h.
+ * smoothed; see the comment on those constants in rats_and_ravens_config.h.
  * Clamped so the camera never shows past either end of the level
  * (world_width, picked per level by generate_level()).                  */
 static void update_camera(void)
@@ -2230,7 +2230,7 @@ static bool status_line_stale(int y, int h)
  * that, so skipping an unchanged redraw avoids repainting a dozen-plus
  * scaled glyphs on every single physics tick for no visible difference.
  * STATUS_SCALE/STATUS_LEVEL_TIME_Y/STATUS_SCORE_Y/STATUS_HIGHSCORE_Y/
- * STATUS_MESSAGE_Y are in platformer_config.h.                           */
+ * STATUS_MESSAGE_Y are in rats_and_ravens_config.h.                           */
 static void draw_status_lines(void)
 {
     static char drawn_level_time_buf[32];

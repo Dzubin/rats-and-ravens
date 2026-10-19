@@ -11,10 +11,10 @@
  * build never sees it, so it keeps the real, unmodified 320x320. Everything
  * else lcd.h declares (RGB(), GLYPH_HEIGHT, lcd_*() functions, and
  * ROWS/MAX_ROW, which derive from HEIGHT and so pick up 480 automatically)
- * passes through unchanged. platformer_config.h and platformer.c both use
+ * passes through unchanged. rats_and_ravens_config.h and rats_and_ravens.c both use
  * WIDTH/HEIGHT directly (WIDTH*10 style scaling via SCALE_X()/SCALE_Y() in
- * platformer_config.h), so redefining just these two macros here is enough
- * to scale the whole game for the desktop build; see platformer_config.h's
+ * rats_and_ravens_config.h), so redefining just these two macros here is enough
+ * to scale the whole game for the desktop build; see rats_and_ravens_config.h's
  * "Scale" section.
  *
  * Author: Thomas Dzubin

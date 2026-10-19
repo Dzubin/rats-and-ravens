@@ -12,8 +12,8 @@ runs on Windows and Linux via a bundled SDL2 desktop port. Not based on or
 inspired by any specific existing game.
 
 ```
-platformer.c                 the whole program
-platformer_config.h          every #define / tunable constant
+rats_and_ravens.c                 the whole program
+rats_and_ravens_config.h          every #define / tunable constant
 CMakeLists.txt                builds the firmware, reusing picocalc-text-starter-main/drivers/*
 desktop/                      Desktop (SDL2) build for Windows and Linux: CMakeLists.txt +
                               the small shim that stands in for the PicoCalc drivers
@@ -36,12 +36,12 @@ content is not.
 Every obstacle, the ground included, is fully solid: the character cannot
 pass through any side of one — walking into a tower's side stops you, and
 jumping into a platform's underside from below stops you there too. See
-`SOLIDS[]` and `step_physics()` in `platformer.c`.
+`SOLIDS[]` and `step_physics()` in `rats_and_ravens.c`.
 
 A one-line debug readout (position, vertical velocity, grounded state,
 double-jump charges left, power-up seconds remaining) exists for tuning
 the movement feel; off by default (`ENABLE_DEBUG_READOUT` in
-`platformer_config.h`).
+`rats_and_ravens_config.h`).
 
 ## Physics
 
@@ -50,13 +50,13 @@ stored in subpixels; the main loop measures real elapsed time and runs
 however many whole 16ms steps that covers, capped so a stall can't make
 the game leap forward when it resumes. This keeps the feel identical on
 RP2040 (no hardware FPU), RP2350, and the desktop build — see
-`step_physics()` in `platformer.c`.
+`step_physics()` in `rats_and_ravens.c`.
 
 Every jump is a fixed, predictable height — there is no "hold to jump
 higher." How high a jump goes depends only on which of three launch
 velocities fired it: the ground jump (~99px), the weaker double jump, or
 the jewel (~150px on its own). Every physics/timing/geometry
-constant lives in `platformer_config.h`. The screen's top edge is also a
+constant lives in `rats_and_ravens_config.h`. The screen's top edge is also a
 hard ceiling — nothing can send the character above it, however jumps get
 combined.
 
@@ -127,7 +127,7 @@ from instead.
 
 ## Random levels & the camera
 
-Every level is randomly generated (`generate_level()` in `platformer.c`):
+Every level is randomly generated (`generate_level()` in `rats_and_ravens.c`):
 its own gaps, towers,
 platforms, foggy zones, and pickups. Obstacles and pickups live in world
 coordinates, not screen coordinates. A horizontal-only camera follows the
@@ -224,17 +224,17 @@ FOG` while inside a foggy zone; when none applies the hint returns. All
 messages use the gold coin pickup's gold colour.
 
 Above level 20, rat_ravens get 5% faster per level, up to double speed
-at level 40 and beyond (`RAT_RAVEN_SPEED_RAMP_*` in `platformer_config.h`).
+at level 40 and beyond (`RAT_RAVEN_SPEED_RAMP_*` in `rats_and_ravens_config.h`).
 
 Rat_ravens are drawn as a rat (ground) and a raven (flying), 16x16 pictures
 from `rat_raven_sprites.h`; the collision box is unchanged. Set
-`RAT_RAVEN_USE_SPRITES` to 0 in `platformer_config.h` to go back to the
+`RAT_RAVEN_USE_SPRITES` to 0 in `rats_and_ravens_config.h` to go back to the
 plain squares.
 
 The solids have surface detail: grass and darker soil on the ground, stone
 towers with mortar lines, windows and a notched cap, wooden platforms with
 plank gaps, and light / dark bevel edges (`SOLID_TEXTURES` in
-`platformer_config.h` turns it off).
+`rats_and_ravens_config.h` turns it off).
 
 Foggy zones stay still on levels 1 to 9. From level 10 on (`FOG_DRIFT_START_LEVEL`)
 they drift slowly left and right, at half the ground rat_raven's speed,
@@ -353,10 +353,10 @@ cmake -B build -G Ninja
 ninja -C build
 ```
 
-Output: `build/platformer-<chip>.uf2` (`<chip>` is `RP2350` or
+Output: `build/rats-and-ravens-<chip>.uf2` (`<chip>` is `RP2350` or
 `RP2040`, matching the board), which the build also copies to the
-top-level folder as `platformer-RP2350.uf2` or
-`platformer-RP2040.uf2`, so both chips' builds can sit side by
+top-level folder as `rats-and-ravens-RP2350.uf2` or
+`rats-and-ravens-RP2040.uf2`, so both chips' builds can sit side by
 side. Flash by copying to the `RPI-RP2` drive — hold BOOTSEL on power-up,
 or press `~` (SHIFT + backtick) in the app.
 
@@ -374,7 +374,7 @@ cmake -S desktop -B build-windows -G Ninja
 ninja -C build-windows
 ```
 
-Output: `platformer-Windows.exe` in the top-level folder (its
+Output: `rats-and-ravens-Windows.exe` in the top-level folder (its
 window is titled "Rats and Ravens"). SDL2 is
 linked statically, so it is a single file with no `SDL2.dll`. The keys are
 the same as the table above (`~` simply closes the program).
@@ -391,7 +391,7 @@ run-path. Keep the two files together.
     cmake -S desktop -B build-linux
     cmake --build build-linux
 
-Output: `platformer-Linux` and `libSDL2-2.0.so.0` in the top-level
+Output: `rats-and-ravens-Linux` and `libSDL2-2.0.so.0` in the top-level
 folder.
 
 ## Status

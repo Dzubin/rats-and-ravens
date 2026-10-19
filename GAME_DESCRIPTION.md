@@ -1,6 +1,6 @@
 # Rats and Ravens: game description
 
-Design notes moved out of the header comment of `platformer.c` (author: Thomas Dzubin).
+Design notes moved out of the header comment of `rats_and_ravens.c` (author: Thomas Dzubin).
 The code comments next to each function still carry the details; this file is the overview.
 
 Every level is randomly generated; see generate_level() and the rest
@@ -20,7 +20,7 @@ below are the only hazard, and the player, rat_ravens and pickups are
 small sprites; still no level THEMES: geometry is random, content is
 not. A one-line debug readout (position, vertical velocity, grounded
 state) is available while the core feel is being tuned; see
-ENABLE_DEBUG_READOUT in platformer_config.h.
+ENABLE_DEBUG_READOUT in rats_and_ravens_config.h.
 
 Rat_ravens: a patrol hazard (RAT_RAVENS[] below), drawn as a rat
 (ground) or a raven (flying) from rat_raven_sprites.h, the same block
@@ -140,7 +140,7 @@ FPU), RP2350, and the desktop build. See step_physics().
 
 Every jump is a fixed, predictable height; there is no "hold to jump
 higher." How high a jump goes depends only on which of three launch
-velocities fired it (see platformer_config.h): the ground jump
+velocities fired it (see rats_and_ravens_config.h): the ground jump
 (~99px), the weaker double jump (see below), or the jewel
 (~150px on its own, a real energy boost, not a change to gravity).
 The screen's top edge is also a hard ceiling: nothing can send the
@@ -154,7 +154,7 @@ it reaches ~141px, enough to clear EVERY generated tower
 without any power-up: power-ups in this project are always optional
 (a skilled path must exist without one), the power-up is only the
 *easy* way. See MAX_AIR_JUMPS and AIR_JUMP_VELOCITY in
-platformer_config.h.
+rats_and_ravens_config.h.
 
 Jewel: at least MIN_JEWELS of these are placed per level
 (see gen_pickups()). Never adds score. Touching one makes every
@@ -171,7 +171,7 @@ but gravity is off inside it: UP/DOWN each queue a small, bounded
 step (FOGGY_STEP_PX) of slow climb/descend, worked off gradually
 rather than fired all at once, so it takes several separate presses
 to cross one; see FOGGY_STEP_PX and FOGGY_CLIMB_SPEED in
-platformer_config.h. Horizontal movement is also slowed. A zone's
+rats_and_ravens_config.h. Horizontal movement is also slowed. A zone's
 top edge is also a generic one-way landing ledge (see
 step_physics()'s vertical resolve): climb clear of it and gravity
 drops you the last sliver onto it, grounded, with a real jump and

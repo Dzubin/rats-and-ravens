@@ -1,10 +1,10 @@
 /*
- * platformer_variables.c - every file-scope (global) type and variable of
- * platformer.c: the structs, the level data arrays, and the game/player/
- * sound/rendering state. It is #included by platformer.c right before
+ * rats_and_ravens_variables.c - every file-scope (global) type and variable of
+ * rats_and_ravens.c: the structs, the level data arrays, and the game/player/
+ * sound/rendering state. It is #included by rats_and_ravens.c right before
  * main() (it is not compiled on its own), so the main file holds only
  * logic. Nothing here contains code; the functions that use these are in
- * platformer.c.
+ * rats_and_ravens.c.
  *
  * Author: Thomas Dzubin
  */
@@ -26,7 +26,7 @@ static solid_t SOLIDS[MAX_SOLIDS];
 static int     solids_count;
 
 /* "Foggy" zones: same rectangle shape as a solid, but NOT solid; see
- * player_in_foggy() and the FOGGY_* constants in platformer_config.h.
+ * player_in_foggy() and the FOGGY_* constants in rats_and_ravens_config.h.
  * Not part of SOLIDS[]: nothing here ever blocks movement, only slows it.
  * Each generated zone is independently either ground-flush or floating
  * (clear air above and below it); see gen_foggy_zones() below.         */
@@ -97,7 +97,7 @@ struct rat_raven {
 static rat_raven_t RAT_RAVENS[MAX_RAT_RAVENS];
 static int       rat_ravens_count;
 
-/* State of the PRNG in platformer.c (rand_u32() and friends).          */
+/* State of the PRNG in rats_and_ravens.c (rand_u32() and friends).          */
 static uint32_t rng_state;
 
 static int world_width;   /* runtime; picked fresh per level, see generate_level() */
@@ -174,7 +174,7 @@ static bool    left_held, right_held;
 static bool    jump_requested;              /* edge trigger: start a jump  */
 static int     down_buffer_ticks;           /* a DOWN press stays usable for this many
                                               * more ticks (foggy zones only); see
-                                              * DOWN_BUFFER_TICKS in platformer_config.h  */
+                                              * DOWN_BUFFER_TICKS in rats_and_ravens_config.h  */
 static int     air_jumps_left;              /* double-jump charges left before landing */
 static bool    used_air_jump;               /* double-jumped this trip (until landing);
                                               * drives the player's colour, see
@@ -271,7 +271,7 @@ static bool status_force_redraw = true;
 static int  status_dirty_y0 = PLAYFIELD_TOP_Y;
 static int  status_dirty_y1 = 0;
 
-/* Sound-effect state machine; see sfx_play() in platformer.c.           */
+/* Sound-effect state machine; see sfx_play() in rats_and_ravens.c.           */
 static int      sfx_ticks_remaining;
 static uint16_t sfx_freq2, sfx_freq3;   /* the tones still to come, in order */
 static int      sfx_ticks2, sfx_ticks3;

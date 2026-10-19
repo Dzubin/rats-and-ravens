@@ -5,7 +5,7 @@
  * left): 'B' is the body colour (green normally, cyan after a double jump,
  * the fading colour while sick), 'D' a darker shade of the body colour,
  * 'w' white and 'k' black for the eyes and mouth. Only used when
- * PLAYER_USE_SPRITE is 1 in platformer_config.h.                          */
+ * PLAYER_USE_SPRITE is 1 in rats_and_ravens_config.h.                          */
 #ifndef PLAYER_SPRITE_H
 #define PLAYER_SPRITE_H
 

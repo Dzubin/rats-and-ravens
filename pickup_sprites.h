@@ -3,8 +3,8 @@
  *
  * A gold coin and a cyan jewel. Each is 8
  * rows of 8 characters; '.' is whatever is behind it and the letters are
- * colours (see pickup_pixel_colour() in platformer.c). Only used when
- * PICKUP_USE_SPRITES is 1 in platformer_config.h.                        */
+ * colours (see pickup_pixel_colour() in rats_and_ravens.c). Only used when
+ * PICKUP_USE_SPRITES is 1 in rats_and_ravens_config.h.                        */
 #ifndef PICKUP_SPRITES_H
 #define PICKUP_SPRITES_H
 
